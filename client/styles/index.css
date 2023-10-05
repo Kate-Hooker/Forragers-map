@@ -1,0 +1,33 @@
+h1 {
+  color: #1035ba;
+  font-family: arial, sans-serif;
+  font-size: 48px;
+  font-weight: bold;
+  margin-top: 0px;
+  margin-bottom: 1px;
+}
+
+p {
+  font-size: large;
+
+  text-indent: 2em;
+}
+
+footer {
+  font-size: small;
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  text-indent: 2em;
+}
+
+#my-map {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+body {
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}

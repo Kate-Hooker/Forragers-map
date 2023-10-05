@@ -1,0 +1,90 @@
+<html>
+  <head>
+    <title>Leaflet + Raster Map tiles</title>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"
+    ></script>
+    <script src="./client/app.js"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css"
+    />
+    <link href="./client/styles/index.css" rel="stylesheet" type="text/css" />
+
+    <style id="compiled-css" type="text/css">
+      html,
+      body,
+      #my-map {
+        width: 90%;
+        height: 90%;
+        margin: 0;
+      }
+    </style>
+  </head>
+
+  <body data-new-gr-c-s-check-loaded="14.991.0" data-gr-ext-installed="">
+    <h1>Foraging for fruit!</h1>
+    <p>
+      Welcome to the secret spot for finding wild produce in Wellington! Please
+      tag any wild fruit, vege or mushroom spots that you would like to share.
+      Please let the admins know if there are any spots no longer available.
+      Free fruit for everyone! Please be respectful and only take what you need.
+    </p>
+    <div id="my-map"></div>
+    <footer>
+      Created by Kate Hooker, Stanley Mair, Liang Wang and Katie Franklin
+    </footer>
+    <script type="text/javascript">
+      var map = L.map('my-map').setView([-41.1500327, 175.7253989], 10)
+
+      // Get your own API Key on https://myprojects.geoapify.com
+      var myAPIKey = 'cba8147efee84af8a959cbd31c53fe2f'
+
+      // Retina displays require different mat tiles quality
+      var isRetina = L.Browser.retina
+
+      var baseUrl = `https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}.png?apiKey=${myAPIKey}`
+      var retinaUrl = `https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}@2x.png?apiKey=${myAPIKey}`
+
+      // Add map tiles layer. Set 20 as the maximal zoom and provide map data attribution.
+      L.tileLayer(isRetina ? retinaUrl : baseUrl, {
+        attribution:
+          'Powered by <a href="https://www.geoapify.com/" target="_blank">Geoapify</a> | © OpenStreetMap <a href="https://www.openstreetmap.org/copyright" target="_blank">contributors</a>',
+        apiKey: myAPIKey,
+        maxZoom: 20,
+        id: 'osm-bright',
+      }).addTo(map)
+
+      var markerData = []
+      var markerIdCounter = 1
+
+      map.on('click', function (event) {
+        // Prompt the user for input using a popup
+        var markerPopupContent = prompt('Enter a description for the marker:')
+
+        if (markerPopupContent) {
+          // Create a marker at the clicked location
+          var marker = L.marker(event.latlng).addTo(map)
+
+          //push marker lat/long into an array of markers (then a database)
+          markerData.push({
+            id: markerIdCounter,
+            latitude: event.latlng.lat,
+            longitude: event.latlng.lng,
+            description: markerPopupContent,
+          })
+
+          markerIdCounter++
+          //console.log(markerData)
+          saveMarker(markerData)
+          //getAllMarkers()
+
+          // Attach a popup to the marker with the user's input
+          marker.bindPopup(markerPopupContent).openPopup()
+        }
+      })
+    </script>
+  </body>
+</html>
